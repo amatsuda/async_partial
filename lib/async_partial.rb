@@ -33,7 +33,6 @@ module AsyncPartial
     def initialize(*)
       super
       @values = []
-      @caller = caller[0]
     end
 
     def <<(value)
