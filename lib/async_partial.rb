@@ -22,6 +22,10 @@ module AsyncPartial
       false
     end
 
+    def html_safe?
+      true
+    end
+
     def to_s
       val = @thread.value
       @thread.kill
