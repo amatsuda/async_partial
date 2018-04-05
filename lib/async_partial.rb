@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "async_partial/version"
+require_relative 'async_partial/railtie'
 
 module AsyncPartial
   module Renderer
