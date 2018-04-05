@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "async_partial"
-  spec.version       = '0.1.0'.freeze
+  spec.version       = '0.2.0'.freeze
   spec.authors       = ["Akira Matsuda"]
   spec.email         = ["ronnie@dio.jp"]
 
