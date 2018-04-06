@@ -11,10 +11,6 @@ module Temple
     class ThreadedRailsOutputBuffer < RailsOutputBuffer
       set_options buffer_class: 'ActionView::OutputBuffer', buffer: 'output_buffer'
 
-      def on_dynamic(code)
-        concat(code)
-      end
-
       def return_buffer
         "#{buffer}.to_s"
       end
