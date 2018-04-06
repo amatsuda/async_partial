@@ -15,6 +15,11 @@ module AsyncPartial
         rescue LoadError
         end
 
+        if Gem.loaded_specs.detect {|g| g[0] == 'haml'}
+          require 'haml/buffer'
+          require_relative 'handlers/haml'
+        end
+
         if Gem.loaded_specs.detect {|g| g[0] == 'slim'}
           require 'temple/generators/rails_output_buffer'
           require_relative 'handlers/slim'
