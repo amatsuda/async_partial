@@ -9,7 +9,7 @@ module AsyncPartial
 
   module HamlArrayBufferizer
     def initialize(*)
-      super;
+      super
       @buffer = AsyncPartial::HamlArrayBuffer.new
     end
   end
