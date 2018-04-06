@@ -3,7 +3,7 @@
 module AsyncPartial
   class HamlArrayBuffer < Array
     def html_safe
-      map(&:to_s).join.html_safe
+      map {|v| AsyncPartial::AsyncResult === v ? v.value : v}.join.html_safe
     end
   end
 

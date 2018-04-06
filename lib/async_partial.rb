@@ -27,6 +27,10 @@ module AsyncPartial
     end
 
     def to_s
+      self
+    end
+
+    def value
       val = @thread.value
       @thread.kill
       val
@@ -60,9 +64,17 @@ module AsyncPartial
     def to_s
       result = @values.each_with_object(ActiveSupport::SafeBuffer.new) do |(v, meth), buf|
         if meth == :<<
-          buf << v.to_s
+          if AsyncPartial::AsyncResult === v
+            buf << v.value
+          else
+            buf << v.to_s
+          end
         else
-          buf.safe_concat(v.to_s)
+          if AsyncPartial::AsyncResult === v
+            buf.safe_concat(v.value)
+          else
+            buf.safe_concat(v.to_s)
+          end
         end
       end
       result.to_s
