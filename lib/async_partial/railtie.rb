@@ -14,6 +14,14 @@ module AsyncPartial
 
           ActionView::Template::Handlers::ERB.erb_implementation = ActionView::Template::Handlers::ERB::ThreadSafeErubi
         rescue LoadError
+          begin
+            require 'action_view/template/handlers/erb'
+            require_relative 'handlers/erubis'
+
+            ActionView::Template::Handlers::ERB.erb_implementation = ActionView::Template::Handlers::ERB::ThreadSafeErubis
+          rescue LoadError
+            raise 'No Erubi nor Erubis found.'
+          end
         end
 
         if Gem.loaded_specs.detect {|g| g[0] == 'haml'}
