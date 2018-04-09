@@ -6,6 +6,7 @@ module AsyncPartial
       ActiveSupport.on_load :action_view do
         ActionView::PartialRenderer.prepend AsyncPartial::Renderer
         ActionView::OutputBuffer.prepend AsyncPartial::ArrayBuffer
+        ActionView::Base.prepend AsyncPartial::CaptureHelper
 
         begin
           require 'action_view/template/handlers/erb/erubi'

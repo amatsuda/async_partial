@@ -13,6 +13,27 @@ module AsyncPartial
     end
   end
 
+  module CaptureHelper
+    def capture(*args, &block)
+      buf = block.binding.local_variable_get :output_buffer
+      value = nil
+      buffer = with_output_buffer(buf) { value = block.call(*args) }
+      if (string = buffer.presence || value) && string.is_a?(String)
+        ERB::Util.html_escape string
+      end
+    end
+
+    # Simply rewind what's written in the buffer
+    def with_output_buffer(buf = nil) #:nodoc:
+      buffer_values_was = buf.buffer_values.clone
+      yield
+      buffer_values_was.each {|e| buf.buffer_values.shift if buf.buffer_values[0] == e}
+      buf.to_s
+    ensure
+      buf.buffer_values = buffer_values_was
+    end
+  end
+
   class AsyncResult
     def initialize(thread)
       @thread = thread
