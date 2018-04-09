@@ -41,5 +41,15 @@ module AsyncPartial
         Temple::Templates::Rails(Slim::Engine, register_as: :slim, generator: Temple::Generators::ThreadedRailsOutputBuffer, disable_capture: true, streaming: true)
       end
     end
+
+    if Gem.loaded_specs.detect {|g| g[0] == 'faml'}
+      initializer 'async_partial_faml', after: :faml do
+        require 'temple/generators/rails_output_buffer'
+        require_relative 'handlers/slim'
+
+        ActionView::Template.register_template_handler(:haml, ->(template) { Faml::Engine.new(use_html_safe: true, generator: Temple::Generators::ThreadedRailsOutputBuffer, filename: template.identifier).call(template.source) })
+        ActionView::Template.register_template_handler(:faml, ->(template) { Faml::Engine.new(use_html_safe: true, generator: Temple::Generators::ThreadedRailsOutputBuffer, filename: template.identifier).call(template.source) })
+      end
+    end
   end
 end
