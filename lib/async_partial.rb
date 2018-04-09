@@ -38,31 +38,33 @@ module AsyncPartial
   end
 
   module ArrayBuffer
+    attr_accessor :buffer_values
+
     def initialize(*)
       super
-      @values = []
+      @buffer_values = []
     end
 
     def <<(value)
-      @values << [value, :<<] unless value.nil?
+      @buffer_values << [value, :<<] unless value.nil?
       self
     end
     alias :append= :<<
 
     def safe_concat(value)
       raise ActiveSupport::SafeBuffer::SafeConcatError unless html_safe?
-      @values << [value, :safe_concat] unless value.nil?
+      @buffer_values << [value, :safe_concat] unless value.nil?
       self
     end
     alias :safe_append= :safe_concat
 
     def safe_expr_append=(val)
-      @values << [val, :safe_expr_append] unless val.nil?
+      @buffer_values << [val, :safe_expr_append] unless val.nil?
       self
     end
 
     def to_s
-      result = @values.each_with_object(ActiveSupport::SafeBuffer.new) do |(v, meth), buf|
+      result = @buffer_values.each_with_object(ActiveSupport::SafeBuffer.new) do |(v, meth), buf|
         if meth == :<<
           if AsyncPartial::AsyncResult === v
             buf << v.value
