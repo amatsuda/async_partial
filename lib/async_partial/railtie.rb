@@ -23,18 +23,22 @@ module AsyncPartial
             raise 'No Erubi nor Erubis found.'
           end
         end
+      end
+    end
 
-        if Gem.loaded_specs.detect {|g| g[0] == 'haml'}
-          require 'haml/buffer'
-          require_relative 'handlers/haml'
-        end
+    if Gem.loaded_specs.detect {|g| g[0] == 'haml'}
+      initializer 'async_partial_haml', after: :haml do
+        require 'haml/buffer'
+        require_relative 'handlers/haml'
+      end
+    end
 
-        if Gem.loaded_specs.detect {|g| g[0] == 'slim'}
-          require 'temple/generators/rails_output_buffer'
-          require_relative 'handlers/slim'
+    if Gem.loaded_specs.detect {|g| g[0] == 'slim'}
+      initializer 'async_partial_slim', after: 'slim_rails.configure_template_digestor' do
+        require 'temple/generators/rails_output_buffer'
+        require_relative 'handlers/slim'
 
-          Temple::Templates::Rails(Slim::Engine, register_as: :slim, generator: Temple::Generators::ThreadedRailsOutputBuffer, disable_capture: true, streaming: true)
-        end
+        Temple::Templates::Rails(Slim::Engine, register_as: :slim, generator: Temple::Generators::ThreadedRailsOutputBuffer, disable_capture: true, streaming: true)
       end
     end
   end
