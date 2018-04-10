@@ -10,7 +10,7 @@ module ActionView
 
             # Dup properties so that we don't modify argument
             properties = Hash[properties]
-            properties[:preamble]   = "output_buffer = ActionView::OutputBuffer.new;"
+            properties[:preamble]   = "output_buffer ||= ActionView::OutputBuffer.new;"
             properties[:postamble]  = "output_buffer.to_s"
             properties[:bufvar]     = "output_buffer"
             properties[:escapefunc] = ""
