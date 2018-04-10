@@ -25,7 +25,7 @@ module AsyncPartial
 
   module CaptureHelper
     def capture(*args, &block)
-      buf = block.binding.local_variable_get :output_buffer
+      buf = Thread.current[:output_buffers].last
       value = nil
       buffer = with_output_buffer(buf) { value = block.call(*args) }
       if (string = buffer.presence || value) && string.is_a?(String)
