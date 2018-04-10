@@ -13,6 +13,16 @@ module AsyncPartial
     end
   end
 
+  module PerThreadBufferStack
+    def render(view, locals, buffer = nil, &block)
+      buffer ||= ActionView::OutputBuffer.new
+      (Thread.current[:output_buffers] ||= []).push buffer
+      result = super
+      Thread.current[:output_buffers].pop
+      result
+    end
+  end
+
   module CaptureHelper
     def capture(*args, &block)
       buf = block.binding.local_variable_get :output_buffer
