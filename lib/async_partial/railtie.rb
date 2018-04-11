@@ -38,6 +38,7 @@ module AsyncPartial
     if Gem.loaded_specs.detect {|g| g[0] == 'slim'}
       initializer 'async_partial_slim', after: 'slim_rails.configure_template_digestor' do
         require 'temple'
+        require 'slim'
         require 'temple/generators/rails_output_buffer'
         require_relative 'handlers/slim'
 
