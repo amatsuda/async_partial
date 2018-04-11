@@ -16,7 +16,7 @@ module AsyncPartial
 
     def collection_with_template
       super.map do |v|
-        v.value if AsyncPartial::AsyncResult === v
+        AsyncPartial::AsyncResult === v ? v.value : v
       end
     end
   end
