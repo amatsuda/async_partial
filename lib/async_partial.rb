@@ -23,8 +23,8 @@ module AsyncPartial
 
   module TemplateRenderer
     def render(view, locals, buffer = nil, &block)
-      if (async = locals.delete :async)
-        locals[:async] = async
+      locals = locals.dup
+      if locals.delete :async
         AsyncResult.new(Thread.new { super })
       else
         super
