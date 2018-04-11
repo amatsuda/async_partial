@@ -15,7 +15,8 @@ module AsyncPartial
 
   module TemplateRenderer
     def render(view, locals, buffer = nil, &block)
-      if locals.delete :async
+      if (async = locals.delete :async)
+        locals[:async] = async
         AsyncResult.new(Thread.new { super })
       else
         super
