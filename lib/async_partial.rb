@@ -13,6 +13,16 @@ module AsyncPartial
     end
   end
 
+  module TemplateRenderer
+    def render(view, locals, buffer = nil, &block)
+      if locals.delete :async
+        AsyncResult.new(Thread.new { super })
+      else
+        super
+      end
+    end
+  end
+
   module PerThreadBufferStack
     def render(view, locals, buffer = nil, &block)
       buffer ||= ActionView::OutputBuffer.new
