@@ -15,7 +15,7 @@ module AsyncPartial
     end
 
     def collection_with_template
-      super.map do |v|
+      super.map! do |v|
         AsyncPartial::AsyncResult === v ? v.value : v
       end
     end
