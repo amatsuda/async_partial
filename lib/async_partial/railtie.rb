@@ -5,10 +5,10 @@ module AsyncPartial
     initializer 'async_partial' do
       ActiveSupport.on_load :action_view do
         ActionView::PartialRenderer.prepend AsyncPartial::Renderer
-        ActionView::Template.prepend AsyncPartial::TemplateRenderer
         ActionView::OutputBuffer.prepend AsyncPartial::ArrayBuffer
         ActionView::Base.prepend AsyncPartial::CaptureHelper
         ActionView::Template.prepend AsyncPartial::PerThreadBufferStack
+        ActionView::Template.prepend AsyncPartial::TemplateRenderer
 
         begin
           require 'action_view/template/handlers/erb/erubi'
