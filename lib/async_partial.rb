@@ -3,7 +3,7 @@
 require_relative 'async_partial/railtie'
 
 module AsyncPartial
-  module Renderer
+  module PartialRenderer
     private
 
     def render_partial
@@ -21,7 +21,7 @@ module AsyncPartial
     end
   end
 
-  module TemplateRenderer
+  module CollectionPartialTemplateRenderer
     def render(view, locals, buffer = nil, &block)
       locals = locals.dup
       if locals.delete :async
