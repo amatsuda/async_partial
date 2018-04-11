@@ -4,11 +4,19 @@ require_relative 'async_partial/railtie'
 
 module AsyncPartial
   module Renderer
-    private def render_partial
+    private
+
+    def render_partial
       if @locals.delete :async
         AsyncResult.new(Thread.new { super })
       else
         super
+      end
+    end
+
+    def collection_with_template
+      super.map do |v|
+        v.value if AsyncPartial::AsyncResult === v
       end
     end
   end
