@@ -36,9 +36,9 @@ module AsyncPartial
     def render(view, locals, buffer = nil, &block)
       buffer ||= ActionView::OutputBuffer.new
       (Thread.current[:output_buffers] ||= []).push buffer
-      result = super
+      super
+    ensure
       Thread.current[:output_buffers].pop
-      result
     end
   end
 
