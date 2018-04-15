@@ -63,6 +63,16 @@ module AsyncPartial
     end
   end
 
+  module FutureUrlHelper
+    def link_to(name = nil, options = nil, html_options = nil, &block)
+      if ((Hash === options) && options.delete(:async)) || ((Hash === html_options) && html_options.delete(:async))
+        AsyncResult.new(Thread.new { super })
+      else
+        super
+      end
+    end
+  end
+
   class AsyncResult
     def initialize(thread)
       @thread = thread
