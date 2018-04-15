@@ -3,6 +3,12 @@
 require_relative 'async_partial/railtie'
 
 module AsyncPartial
+  class << self
+    def executor
+      @executor ||= Concurrent::ThreadPoolExecutor.new(min_threads: [2, Concurrent.processor_count - 1].max, max_threads: [2, Concurrent.processor_count - 1].max, max_queue: 0)
+    end
+  end
+
   module PartialRenderer
     private
 
@@ -75,7 +81,7 @@ module AsyncPartial
 
   class AsyncResult
     def initialize(&block)
-      @future = Concurrent::Future.execute(&block)
+      @future = Concurrent::Future.execute(executor: AsyncPartial.executor, &block)
     end
 
     def nil?
