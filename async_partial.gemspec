@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'rails'
   spec.add_dependency 'method_source'
+  spec.add_dependency 'concurrent-ruby'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'
