@@ -8,7 +8,7 @@ module AsyncPartial
 
     def render_partial
       if @locals.delete :async
-        AsyncResult.new(Thread.new { super })
+        AsyncResult.new { super }
       else
         super
       end
@@ -25,7 +25,7 @@ module AsyncPartial
     def render(view, locals, buffer = nil, &block)
       locals = locals.dup
       if locals.delete :async
-        AsyncResult.new(Thread.new { super })
+        AsyncResult.new { super }
       else
         super
       end
@@ -66,7 +66,7 @@ module AsyncPartial
   module FutureUrlHelper
     def link_to(name = nil, options = nil, html_options = nil, &block)
       if ((Hash === options) && options.delete(:async)) || ((Hash === html_options) && html_options.delete(:async))
-        AsyncResult.new(Thread.new { super })
+        AsyncResult.new { super }
       else
         super
       end
@@ -74,8 +74,8 @@ module AsyncPartial
   end
 
   class AsyncResult
-    def initialize(thread)
-      @thread = thread
+    def initialize(&block)
+      @thread = Thread.new(&block)
     end
 
     def nil?
