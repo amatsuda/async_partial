@@ -75,7 +75,7 @@ module AsyncPartial
 
   class AsyncResult
     def initialize(&block)
-      @thread = Thread.new(&block)
+      @future = Concurrent::Future.execute(&block)
     end
 
     def nil?
@@ -91,9 +91,7 @@ module AsyncPartial
     end
 
     def value
-      val = @thread.value
-      @thread.kill
-      val
+      @future.value!
     end
   end
 
