@@ -84,10 +84,6 @@ module AsyncPartial
       @future = Concurrent::Future.execute(executor: AsyncPartial.executor, &block)
     end
 
-    def nil?
-      false
-    end
-
     def html_safe?
       true
     end
